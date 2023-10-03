@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c0c1069a5ae02d41bb0e5e3220e1a12, type: 3}
+  m_Name: CharaPrefabList
+  m_EditorClassIdentifier: 
+  prefabList:
+  - charaCode: 1
+    prefab: {fileID: 3831572618178477634, guid: dc9367e30ab4d724c8217ef676e8b3a4,
+      type: 3}
+  - charaCode: 2
+    prefab: {fileID: 8642496436137493028, guid: b2a643c8c8072df46b610b16405ca331,
+      type: 3}
+  - charaCode: 3
+    prefab: {fileID: 1936486221362817871, guid: 6eded7a0a04e7ce49a6161ae99b05945,
+      type: 3}
