@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee99453e67d4ddb419b897f3fd027042, type: 3}
+  m_Name: CharacterControlInput
+  m_EditorClassIdentifier: 
+  forwardInputFunc: {fileID: 11400000, guid: 7a926edc9b3131f4da2c94664a59aad3, type: 2}
+  backInputFunc: {fileID: 11400000, guid: 765d64cd0ff02ba468f3373b81f1fd0c, type: 2}
+  rightInputFunc: {fileID: 11400000, guid: 259d9a4159daa9f48ad88f09ce9d6983, type: 2}
+  leftInputFunc: {fileID: 11400000, guid: 33649e93023aa394a861271af1d9dff0, type: 2}

@@ -11,7 +11,6 @@ namespace EsDee
         public GameObject prefab;
     }
 
-
     [CreateAssetMenu(fileName = "CharaPrefabList", menuName = "CharaPrefabList")]
     public class CharaPrefabList : ScriptableObject
     {
@@ -20,19 +19,11 @@ namespace EsDee
 
         public CharaPrefab Find(CharaCode charaCode, out bool ok)
         {
-            Assert.IsFalse(charaCode != CharaCode.NotSelected);
+            Assert.IsFalse(charaCode == CharaCode.NotSelected);
 
             var found = prefabList.Find((cp) => cp.charaCode == charaCode);
-            if (found == null)
-            {
-                ok = false;
-                return null;
-            }
-
-            ok = true;
+            ok = found != null;
             return found;
         }
     }
 }
-
-

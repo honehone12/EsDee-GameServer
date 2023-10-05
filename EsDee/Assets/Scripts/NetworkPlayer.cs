@@ -1,23 +1,54 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.Assertions;
 using Unity.Netcode;
 using Unity.Collections;
+using TMPro;
 
 namespace EsDee
 {
     public class NetworkPlayer : NetworkBehaviour
     {
+        [SerializeField]
+        TMP_Text nameTag;
+
         NetworkVariable<FixedString32Bytes> networkName = new();
+
+        void Awake()
+        {
+            Assert.IsNotNull(nameTag);
+        }
+
+        void OnEnable()
+        {
+            networkName.OnValueChanged += OnNetworkNameChanged;
+        }
+
+        void OnDisable()
+        {
+            networkName.OnValueChanged -= OnNetworkNameChanged;
+        }
 
         public override void OnNetworkSpawn()
         {
             if (IsClient)
             {
-                networkName.OnValueChanged += OnNetworkNameChanged;
-
                 if (IsOwner)
                 {
                     SetNetworkNameServerRpc(UserProfile.Singleton.Name);
                 }
+                else
+                {
+                    _ = StartCoroutine(WaitForVariableInitialized());
+                }
             }
+        }
+
+        IEnumerator WaitForVariableInitialized()
+        {
+            yield return new WaitWhile(() => networkName.Value.IsEmpty);
+
+            UpdataNameTag(networkName.Value.ToString());
         }
 
         [ServerRpc(RequireOwnership = true, Delivery = RpcDelivery.Reliable)]
@@ -34,9 +65,20 @@ namespace EsDee
 
         public void OnNetworkNameChanged(FixedString32Bytes prev, FixedString32Bytes next)
         {
+            Assert.IsFalse(next.IsEmpty);
 
+            if (IsClient)
+            {
+                UpdataNameTag(next.ToString());
+            }
+        }
+
+        void UpdataNameTag(string name)
+        {
+            if (!string.IsNullOrEmpty(name) && name.Length <= InputUserNameUI.UserNameLengthLimitUtf8)
+            {
+                nameTag.text = name;
+            }
         }
     }
 }
-
-

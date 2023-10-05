@@ -6,10 +6,7 @@ namespace EsDee
 {
     public class UserProfile : MonoBehaviour
     {
-        public static UserProfile Singleton
-        {
-            get; private set;
-        }
+        public static UserProfile Singleton { get; private set; }
 
         string nameCache;
         CharaCode charaCodeChace;
