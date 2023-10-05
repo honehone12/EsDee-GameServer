@@ -3,7 +3,7 @@ using Unity.Netcode;
 
 namespace EsDee
 {
-    public class NetworkBoot : MonoBehaviour
+    public class SceneBoot : MonoBehaviour
     {
         void Start()
         {

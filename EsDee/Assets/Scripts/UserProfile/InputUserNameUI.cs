@@ -5,9 +5,6 @@ namespace EsDee
 {
     public class InputUserNameUI : MonoBehaviour
     {
-        public const int UserNameLengthLimitUtf8 = 32;
-        public const string DefaultUserName = "Guest";
-
         static InputUserNameUI Instance;
         
         public static bool IsInputUserNameScene => Instance != null;
@@ -15,7 +12,7 @@ namespace EsDee
         [SerializeField]
         SceneLoader sceneLoader;
 
-        string nameBuffer = DefaultUserName;
+        string nameBuffer = StringUtil.DefaultUserName;
 
         void Awake()
         {
@@ -41,7 +38,7 @@ namespace EsDee
         {
             if (!string.IsNullOrEmpty(name) &&
                 name.Length > 0 &&
-                name.Length <= UserNameLengthLimitUtf8)
+                name.Length <= StringUtil.UserNameLengthLimitUtf8)
             {
                 nameBuffer = name;
             }

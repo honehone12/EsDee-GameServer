@@ -11,5 +11,3 @@ namespace EsDee
         public override bool IsOn => Input.GetKey(keyCode);
     }
 }
-
-

@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79859402ffc978f449df073358537b76, type: 3}
-  m_Name: GameBootSetting
+  m_Script: {fileID: 11500000, guid: b351faae170396545bd1079af325cec9, type: 3}
+  m_Name: CylinderBullet
   m_EditorClassIdentifier: 
-  bootMode: 2
+  bulletPrefab: {fileID: 591195936402037432, guid: d0ec50c6498285845bedfaea7247b0fc,
+    type: 3}

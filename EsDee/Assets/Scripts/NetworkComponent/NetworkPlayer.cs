@@ -75,7 +75,7 @@ namespace EsDee
 
         void UpdataNameTag(string name)
         {
-            if (!string.IsNullOrEmpty(name) && name.Length <= InputUserNameUI.UserNameLengthLimitUtf8)
+            if (!string.IsNullOrEmpty(name) && name.Length <= StringUtil.UserNameLengthLimitUtf8)
             {
                 nameTag.text = name;
             }

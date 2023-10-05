@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 2753167541277744742}
   - component: {fileID: 5711690251166866248}
   m_Layer: 0
-  m_Name: NetworkBoot
+  m_Name: Boot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

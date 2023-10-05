@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3683382030165413425}
   - component: {fileID: 1605081548843571410}
   - component: {fileID: 4678706195424274721}
+  - component: {fileID: 6282089113528686066}
   - component: {fileID: -7573193844871108084}
   - component: {fileID: 3288347438445484829}
   - component: {fileID: 2983315697403098479}
@@ -109,6 +110,19 @@ MonoBehaviour:
   torque: 0.5
   controlInput: {fileID: 11400000, guid: 4ce76028a9c00cf49bc568b2f3c0fff1, type: 2}
   inputBufferSize: 16
+--- !u!114 &6282089113528686066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1283740370154564313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26e08b49d775bc941a509f52f3994f76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chracterSkillList: {fileID: 11400000, guid: e5f6132e93db3ac4eb71db64efd683fd, type: 2}
 --- !u!114 &-7573193844871108084
 MonoBehaviour:
   m_ObjectHideFlags: 0
