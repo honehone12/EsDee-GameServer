@@ -3,7 +3,6 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.Assertions;
 using EsDee.Extensions;
-using UnityEditor.Experimental.GraphView;
 
 namespace EsDee
 {
@@ -24,16 +23,6 @@ namespace EsDee
             Assert.IsNotNull(characterSkillInput);
             Assert.IsNotNull(characterSkillList);
         }
-
-        //void OnEnable()
-        //{
-        //    networkSkillSlot.OnValueChanged += OnNetworkSkillSlotChanged;
-        //}
-
-        //void OnDisable()
-        //{
-        //    networkSkillSlot.OnValueChanged -= OnNetworkSkillSlotChanged;
-        //}
 
         public override void OnNetworkSpawn()
         {
@@ -185,11 +174,6 @@ namespace EsDee
                 Debug.Log("skill mouse l");
             }
         }
-
-        //public void OnNetworkSkillSlotChanged(SkillSlot prev, SkillSlot next)
-        //{
-        //    // empty for now
-        //}
     }
 }
 
