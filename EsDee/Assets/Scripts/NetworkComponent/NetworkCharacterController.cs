@@ -43,6 +43,11 @@ namespace EsDee
 
         void FixedUpdate()
         {
+            if (Time.frameCount % 2 == 0)
+            {
+                return;
+            }
+
             if (IsClient && IsOwner)
             {
                 var controlBits = controlInput.GetCharacterControlInput();
@@ -55,31 +60,28 @@ namespace EsDee
             if (IsServer)
             {
                 var nextBits = inputBuffer.DequeueOrDefault();
-                float depth = default;
-                float theta = default;
-                if (nextBits.IsBitOn(BitsUtil.ForwardBit))
+                if (nextBits != default)
                 {
-                    depth += 1.0f;
-                }
-                if (nextBits.IsBitOn(BitsUtil.BackBit))
-                {
-                    depth -= 1.0f;
-                }
-                if (nextBits.IsBitOn(BitsUtil.RightBit))
-                {
-                    theta += 1.0f;
-                }
-                if (nextBits.IsBitOn(BitsUtil.LeftBit))
-                {
-                    theta -= 1.0f;
-                }
+                    float depth = default;
+                    float theta = default;
+                    if (nextBits.IsBitOn(BitsUtil.ForwardBit))
+                    {
+                        depth += 1.0f;
+                    }
+                    if (nextBits.IsBitOn(BitsUtil.BackBit))
+                    {
+                        depth -= 1.0f;
+                    }
+                    if (nextBits.IsBitOn(BitsUtil.RightBit))
+                    {
+                        theta += 1.0f;
+                    }
+                    if (nextBits.IsBitOn(BitsUtil.LeftBit))
+                    {
+                        theta -= 1.0f;
+                    }
 
-                if (depth != default)
-                {
                     rigidBody.AddForce(depth * force * rigidBodyTransform.forward, ForceMode.Impulse);
-                }
-                if (theta != default)
-                {
                     rigidBody.AddTorque(theta * torque * rigidBodyTransform.up, ForceMode.Impulse);
                 }
             }

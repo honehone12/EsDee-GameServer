@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b351faae170396545bd1079af325cec9, type: 3}
   m_Name: CubeBullet
   m_EditorClassIdentifier: 
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 7144240056734845207, guid: f2d095acb5ba3464395dfedfed9362e1,
+    type: 3}

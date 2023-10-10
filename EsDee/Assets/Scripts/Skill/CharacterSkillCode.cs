@@ -1,6 +1,6 @@
 namespace EsDee
 {
-    public enum SkillCode : ushort
+    public enum CharacterSkillCode : ushort
     {
         NotSelected,
 

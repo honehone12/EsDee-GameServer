@@ -8,11 +8,62 @@ namespace EsDee
     {
         public static UserProfile Singleton { get; private set; }
 
-        string nameCache;
-        CharaCode charaCodeChace;
+        string userName;
+        CharaCode charaCode;
+        SkillSlot skillSlot;
 
-        public CharaCode CharacterCode => charaCodeChace;
-        public FixedString32Bytes Name => new FixedString32Bytes(nameCache);
+        public CharaCode CharacterCode
+        {
+            get => charaCode;
+            set 
+            {
+                Assert.IsFalse(value == CharaCode.NotSelected);
+                if (CharaSelectUI.IsCharaSelectScene)
+                {
+                    charaCode = value;
+                }
+            }
+        }
+
+        public string Name
+        {
+            set
+            {
+                Assert.IsFalse(string.IsNullOrEmpty(value));
+                if (InputUserNameUI.IsInputUserNameScene)
+                {
+                    userName = value;
+                }
+            }
+        }
+
+        public FixedString32Bytes Name32Bytes => new FixedString32Bytes(userName);
+
+        public CharacterSkillCode SkillMouseR
+        {
+            set
+            {
+                Assert.IsFalse(value == CharacterSkillCode.NotSelected);
+                if (SkillSelectUI.IsSkillSelectScene)
+                {
+                    skillSlot.charaSkillMouseR = value;
+                }
+            }
+        }
+
+        public CharacterSkillCode SkillMouseL
+        {
+            set
+            {
+                Assert.IsFalse(value == CharacterSkillCode.NotSelected);
+                if (SkillSelectUI.IsSkillSelectScene)
+                {
+                    skillSlot.charaSkillMouseL = value;
+                }
+            }
+        }
+
+        public SkillSlot SkillSlot => skillSlot;
 
         void Awake()
         {
@@ -29,24 +80,6 @@ namespace EsDee
         void Start()
         {
             DontDestroyOnLoad(gameObject);
-        }
-
-        public void SetName(string name)
-        {
-            Assert.IsFalse(string.IsNullOrEmpty(name));
-            if (InputUserNameUI.IsInputUserNameScene)
-            {
-                nameCache = name;
-            }
-        }
-
-        public void SetCharaCode(CharaCode charaCode)
-        {
-            Assert.IsFalse(charaCode == CharaCode.NotSelected);
-            if (CharaSelectUI.IsCharaSelectScene)
-            {
-                charaCodeChace = charaCode;
-            }
         }
     }
 }

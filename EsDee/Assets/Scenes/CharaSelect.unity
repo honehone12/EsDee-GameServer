@@ -1127,7 +1127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d903ed379fa81e41a98a46ceb123819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Dev
+  nextSceneName: SkillSelect
   delay: 0
 --- !u!1 &1746639309
 GameObject:

@@ -35,7 +35,7 @@ namespace EsDee
             {
                 if (IsOwner)
                 {
-                    SetNetworkNameServerRpc(UserProfile.Singleton.Name);
+                    SetNetworkNameServerRpc(UserProfile.Singleton.Name32Bytes);
                 }
                 else
                 {

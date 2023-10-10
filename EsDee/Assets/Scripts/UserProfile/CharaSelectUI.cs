@@ -49,10 +49,8 @@ namespace EsDee
 
         public void OnCharaSelect(CharaCode charaCode)
         {
-            UserProfile.Singleton.SetCharaCode(charaCode);
+            UserProfile.Singleton.CharacterCode = charaCode;
             sceneLoader.Load();
         }
-
-        
     }
 }

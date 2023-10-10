@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/CharaSelect.unity
     guid: efae6502f5fc77b418cbbe7bcd1d77db
   - enabled: 1
+    path: Assets/Scenes/SkillSelect.unity
+    guid: 50161a60d9866ff48b5cc37b48b40135
+  - enabled: 1
     path: Assets/Scenes/Dev/Dev.unity
     guid: 08d3c2f33007b3840be66f94a204bf13
   m_configObjects: {}

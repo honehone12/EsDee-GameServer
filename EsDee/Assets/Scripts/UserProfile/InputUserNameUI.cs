@@ -46,7 +46,7 @@ namespace EsDee
 
         public void OnOKButton()
         {
-            UserProfile.Singleton.SetName(nameBuffer);
+            UserProfile.Singleton.Name = nameBuffer;
             sceneLoader.Load();
         }
     }

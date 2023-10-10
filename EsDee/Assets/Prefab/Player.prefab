@@ -122,7 +122,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26e08b49d775bc941a509f52f3994f76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chracterSkillList: {fileID: 11400000, guid: e5f6132e93db3ac4eb71db64efd683fd, type: 2}
+  characterSkillInput: {fileID: 11400000, guid: c1a63c6d459b83146be035e9dc7f8413,
+    type: 2}
+  characterSkillList: {fileID: 11400000, guid: e5f6132e93db3ac4eb71db64efd683fd, type: 2}
 --- !u!114 &-7573193844871108084
 MonoBehaviour:
   m_ObjectHideFlags: 0

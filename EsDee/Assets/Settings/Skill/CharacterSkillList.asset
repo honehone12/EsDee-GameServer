@@ -14,10 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterSkillList:
   - skillCode: 1
-    skillFunc: {fileID: 11400000, guid: ea4f8fd3d1fefd549a447b3e6d8230f1, type: 2}
+    skillFunc: {fileID: 11400000, guid: 9d790ea6ba9780940b071943367dd2f5, type: 2}
+    intervalSec: 1
   - skillCode: 2
-    skillFunc: {fileID: 11400000, guid: e3f427db933131a49aec491a1e07caf5, type: 2}
+    skillFunc: {fileID: 11400000, guid: bf69173b7c3fc3e4fa83779e34d64816, type: 2}
+    intervalSec: 1
   - skillCode: 3
-    skillFunc: {fileID: 11400000, guid: cca00cf3df0a75746a21c8f13af785cc, type: 2}
+    skillFunc: {fileID: 11400000, guid: e0b83cdc3a4292c44ae60187ae4ddaa2, type: 2}
+    intervalSec: 1
   - skillCode: 4
-    skillFunc: {fileID: 11400000, guid: 63ebdfe3eaeea154db56cfbe25e27a21, type: 2}
+    skillFunc: {fileID: 11400000, guid: 828327ac985a7254491ab05e2ee2e69c, type: 2}
+    intervalSec: 1

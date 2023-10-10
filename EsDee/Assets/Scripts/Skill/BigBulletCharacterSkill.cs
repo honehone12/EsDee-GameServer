@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace EsDee
 {
-    [CreateAssetMenu(fileName = "BigBulletSkillFunc", menuName = "Skill/BigBulletSkillFunc")]
-    public class BigBulletSkill : SkillFunc
+    [CreateAssetMenu(fileName = "BigBulletCharaSkillFunc", menuName = "Skill/BigBulletCharaSkillFunc")]
+    public class BigBulletCharacterSkill : SkillFunc
     {
         [SerializeField]
         Bullet bullet;
