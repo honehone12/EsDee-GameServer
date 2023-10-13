@@ -3586,7 +3586,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d903ed379fa81e41a98a46ceb123819, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextSceneName: Dev
+  nextSceneName: Battle
   delay: 0
 --- !u!114 &1983911038
 MonoBehaviour:

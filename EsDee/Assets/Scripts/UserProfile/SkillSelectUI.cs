@@ -35,8 +35,8 @@ namespace EsDee
 
         void Start()
         {
-            OnSkillSelected(CharacterSkillCode.CubeBigBullet, RL.R);
-            OnSkillSelected(CharacterSkillCode.CubeBigBullet, RL.L);
+            OnSkillSelected(SkillCode.CubeBigBullet, RL.R);
+            OnSkillSelected(SkillCode.CubeBigBullet, RL.L);
         }
 
         void OnDestroy()
@@ -49,7 +49,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CubeBigBullet, RL.R);
+                OnSkillSelected(SkillCode.CubeBigBullet, RL.R);
             }
         }
 
@@ -57,7 +57,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.SphereBigBullet, RL.R);
+                OnSkillSelected(SkillCode.SphereBigBullet, RL.R);
             }
         }
 
@@ -65,7 +65,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CapsuleBigBullet, RL.R);
+                OnSkillSelected(SkillCode.CapsuleBigBullet, RL.R);
             }
         }
 
@@ -73,7 +73,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CylinderBigBullet, RL.R);
+                OnSkillSelected(SkillCode.CylinderBigBullet, RL.R);
             }
         }
 
@@ -81,7 +81,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CubeBigBullet, RL.L);
+                OnSkillSelected(SkillCode.CubeBigBullet, RL.L);
             }
         }
 
@@ -89,7 +89,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.SphereBigBullet, RL.L);
+                OnSkillSelected(SkillCode.SphereBigBullet, RL.L);
             }
         }
 
@@ -97,7 +97,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CapsuleBigBullet, RL.L);
+                OnSkillSelected(SkillCode.CapsuleBigBullet, RL.L);
             }
         }
 
@@ -105,7 +105,7 @@ namespace EsDee
         {
             if (flag)
             {
-                OnSkillSelected(CharacterSkillCode.CylinderBigBullet, RL.L);
+                OnSkillSelected(SkillCode.CylinderBigBullet, RL.L);
             }
         }
 
@@ -114,7 +114,7 @@ namespace EsDee
             sceneLoader.Load();
         }
 
-        void OnSkillSelected(CharacterSkillCode code, RL rl)
+        void OnSkillSelected(SkillCode code, RL rl)
         {
             switch (rl)
             {

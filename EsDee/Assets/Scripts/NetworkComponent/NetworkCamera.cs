@@ -34,9 +34,9 @@ namespace EsDee
 
         void LateUpdate()
         {
-            if (IsClient && !IsOwner)
+            if (IsClient)
             {
-
+                uiTransform.LookAt(SceneCamera.Main.RenderCamera.transform);
             }
         }
     }

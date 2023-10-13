@@ -2,6 +2,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Netcode;
 using EsDee.Extensions;
+using System.Collections.Generic;
+using Unity.Netcode.Components;
 
 namespace EsDee
 {
@@ -43,11 +45,6 @@ namespace EsDee
 
         void FixedUpdate()
         {
-            if (Time.frameCount % 2 == 0)
-            {
-                return;
-            }
-
             if (IsClient && IsOwner)
             {
                 var controlBits = controlInput.GetCharacterControlInput();

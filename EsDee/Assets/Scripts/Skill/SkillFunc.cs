@@ -4,6 +4,8 @@ namespace EsDee
 {
     public abstract class SkillFunc : ScriptableObject
     {
-        public abstract void Fire(Vector3 origin);
+        public abstract void ServerFire(in SkillParams skillParams);
+
+        public virtual void ClientFire(in SkillParams skillParams) { }
     }
 }

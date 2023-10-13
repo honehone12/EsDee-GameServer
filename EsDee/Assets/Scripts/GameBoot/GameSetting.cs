@@ -3,21 +3,22 @@ using UnityEngine.Assertions;
 
 namespace EsDee
 {
-    public class GameMode : MonoBehaviour
+    public class GameSetting : MonoBehaviour
     {
-        public static GameMode Singleton
+        public static GameSetting Singleton
         {
             get; private set;
         }
 
         [SerializeField]
-        GameBootModeSetting bootModeSetting;
+        GameBootSetting bootSetting;
 
-        public GameBootMode BootMode => bootModeSetting.BootMode;
+        public GameBootSetting BootSetting => bootSetting;
+
 
         void Awake()
         {
-            Assert.IsNotNull(bootModeSetting);
+            Assert.IsNotNull(bootSetting);
 
             if (Singleton == null)
             {

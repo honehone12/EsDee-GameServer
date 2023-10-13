@@ -14,6 +14,9 @@ namespace EsDee
         [Header("SkillList")]
         [SerializeField]
         CharacterSkillList characterSkillList;
+        [Header("OriginList")]
+        [SerializeField]
+        SkillOriginList skillOriginList = new();
 
         uint skillIntervalBits = 0b1111_1111_1111_1111;
         NetworkVariable<SkillSlot> networkSkillSlot = new();
@@ -35,10 +38,6 @@ namespace EsDee
 
         void FixedUpdate()
         {
-            if (Time.frameCount % 2 != 0)
-            {
-                return;
-            }
 
             if (IsClient && IsOwner)
             {
@@ -48,18 +47,23 @@ namespace EsDee
                     var skillSlot = networkSkillSlot.Value;
                     if (skillInputBits.IsBitOn(BitsUtil.MouseRBit))
                     {
-                        ClientSideCharacterSkill(skillSlot.charaSkillMouseR, BitsUtil.MouseRBit);
+                        ClientSideTriggerCharacterSkill(skillSlot.charaSkillMouseR, BitsUtil.MouseRBit);
                     }
                     if (skillInputBits.IsBitOn(BitsUtil.MouseLBit))
                     {
-                        ClientSideCharacterSkill(skillSlot.charaSkillMouseL, BitsUtil.MouseLBit);
+                        ClientSideTriggerCharacterSkill(skillSlot.charaSkillMouseL, BitsUtil.MouseLBit);
                     }
                 }
             }
         }
 
-        void ClientSideCharacterSkill(CharacterSkillCode skillCode, byte skillBits)
+        void ClientSideTriggerCharacterSkill(SkillCode skillCode, byte skillBits)
         {
+            if (skillCode == SkillCode.NotSelected || skillBits == default)
+            {
+                return;
+            }
+
             if (skillIntervalBits.IsBitOn(skillBits))
             {
                 var skill = characterSkillList.Find(skillCode, out var ok);
@@ -74,7 +78,7 @@ namespace EsDee
                             RequestCharaterSkillMouseLServerRpc();
                             break;
                         default:
-                            break;
+                            return;
                     }
 
                     if (IsHost && IsOwner)
@@ -88,12 +92,35 @@ namespace EsDee
             }
         }
 
-        void ServerSideCharacterSkill(CharacterSkillCode skillCode, byte skillBits)
+        void ClientSideFireCharacterSkill(SkillCode skillCode)
         {
+            if (skillCode == SkillCode.NotSelected)
+            {
+                return;
+            }
+
+            var skill = characterSkillList.Find(skillCode, out var skillOK);
+            var skillOrigin = skillOriginList.Find(skillCode, out var originOK);
+            if (skillOK && originOK)
+            {
+                var originTransform = skillOrigin.origin;
+                var skillParams = new SkillParams(originTransform.position, originTransform.forward);
+                skill.skillFunc.ClientFire(in skillParams);
+            }
+        }
+
+        void ServerSideCharacterSkill(SkillCode skillCode, byte skillBits)
+        {
+            if (skillCode == SkillCode.NotSelected || skillBits == default)
+            {
+                return;
+            }
+
             if (skillIntervalBits.IsBitOn(skillBits))
             {
-                var skill = characterSkillList.Find(skillCode, out var ok);
-                if (ok)
+                var skill = characterSkillList.Find(skillCode, out var skillOK);
+                var skillOrigin = skillOriginList.Find(skillCode, out var originOK);
+                if (skillOK && originOK)
                 {
                     switch (skillBits)
                     {
@@ -104,8 +131,12 @@ namespace EsDee
                             BroadcastCharacterSkillMouseLClientRpc();
                             break;
                         default:
-                            break;
+                            return;
                     }
+
+                    var originTransform = skillOrigin.origin;
+                    var skillParams = new SkillParams(originTransform.position, originTransform.forward);
+                    skill.skillFunc.ServerFire(in skillParams);
 
                     skillIntervalBits &= ~(uint)skillBits;
                     StartCoroutine(CoolingSkillInterval(skill.intervalSec, skillBits));
@@ -121,9 +152,9 @@ namespace EsDee
         }
 
         [ServerRpc(RequireOwnership = true, Delivery = RpcDelivery.Reliable)]
-        void SetNetworkSkillServerRpc(CharacterSkillCode r, CharacterSkillCode l, ServerRpcParams rpcParams = default)
+        void SetNetworkSkillServerRpc(SkillCode r, SkillCode l, ServerRpcParams rpcParams = default)
         {
-            if (r == CharacterSkillCode.NotSelected || l == CharacterSkillCode.NotSelected)
+            if (r == SkillCode.NotSelected || l == SkillCode.NotSelected)
             {
                 NetworkManager.Singleton.DisconnectClient(rpcParams.Receive.SenderClientId);
             }
@@ -139,42 +170,28 @@ namespace EsDee
         void RequestCharacterSkillMouseRServerRpc(ServerRpcParams rpcParams = default)
         {
             var skillCode = networkSkillSlot.Value.charaSkillMouseR;
-            if (skillCode != CharacterSkillCode.NotSelected)
-            {
-                ServerSideCharacterSkill(skillCode, BitsUtil.MouseRBit);
-            }
+            ServerSideCharacterSkill(skillCode, BitsUtil.MouseRBit);
         }
 
         [ServerRpc(RequireOwnership = true, Delivery = RpcDelivery.Reliable)]
         void RequestCharaterSkillMouseLServerRpc(ServerRpcParams rpcParams = default)
         {
             var skillCode = networkSkillSlot.Value.charaSkillMouseL;
-            if (skillCode != CharacterSkillCode.NotSelected)
-            {
-                ServerSideCharacterSkill(skillCode, BitsUtil.MouseLBit);
-            }
+            ServerSideCharacterSkill(skillCode, BitsUtil.MouseLBit);
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         void BroadcastCharacterSkillMouseRClientRpc(ClientRpcParams rpcParams = default)
         {
             var skillCode = networkSkillSlot.Value.charaSkillMouseR;
-            if (skillCode != CharacterSkillCode.NotSelected)
-            {
-                Debug.Log("skill mouse r");
-            }
+            ClientSideFireCharacterSkill(skillCode);
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         void BroadcastCharacterSkillMouseLClientRpc(ClientRpcParams rpcParams = default)
         {
             var skillCode = networkSkillSlot.Value.charaSkillMouseL;
-            if (skillCode != CharacterSkillCode.NotSelected)
-            {
-                Debug.Log("skill mouse l");
-            }
+            ClientSideFireCharacterSkill(skillCode);
         }
     }
 }
-
-

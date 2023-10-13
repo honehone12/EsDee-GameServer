@@ -1,23 +1,42 @@
+using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Components;
 
 namespace EsDee
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(NetworkObject))]
+    [RequireComponent(typeof(NetworkRigidbody))]
     public class NetworkBullet : NetworkBehaviour
     {
-        Rigidbody rigidBody;
+        [SerializeField]
+        float lifeTime = 3.0f;
 
-        public Rigidbody RigidBody
+        Rigidbody rigidBody;
+        NetworkObject networkObject;
+
+        public Rigidbody RigidBodyComponent => rigidBody;
+
+        public NetworkObject NetworkObjectComponent => networkObject;
+
+        void Awake()
         {
-            get
+            rigidBody = GetComponent<Rigidbody>();
+            networkObject = GetComponent<NetworkObject>();
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            if (IsServer)
             {
-                if (rigidBody == null)
-                {
-                    rigidBody = GetComponent<Rigidbody>();
-                }
-                return rigidBody;
+                _ = StartCoroutine(LifeTimer());
             }
+        }
+
+        IEnumerator LifeTimer()
+        {
+            yield return new WaitForSeconds(lifeTime);
+            networkObject.Despawn(true);
         }
     }
 }

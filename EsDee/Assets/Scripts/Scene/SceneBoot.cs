@@ -7,7 +7,7 @@ namespace EsDee
     {
         void Start()
         {
-            var bootMode = GameMode.Singleton.BootMode;
+            var bootMode = GameSetting.Singleton.BootSetting.BootMode;
             switch (bootMode)
             {
                 case GameBootMode.Development:

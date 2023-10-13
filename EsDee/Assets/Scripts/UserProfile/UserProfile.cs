@@ -39,11 +39,11 @@ namespace EsDee
 
         public FixedString32Bytes Name32Bytes => new FixedString32Bytes(userName);
 
-        public CharacterSkillCode SkillMouseR
+        public SkillCode SkillMouseR
         {
             set
             {
-                Assert.IsFalse(value == CharacterSkillCode.NotSelected);
+                Assert.IsFalse(value == SkillCode.NotSelected);
                 if (SkillSelectUI.IsSkillSelectScene)
                 {
                     skillSlot.charaSkillMouseR = value;
@@ -51,11 +51,11 @@ namespace EsDee
             }
         }
 
-        public CharacterSkillCode SkillMouseL
+        public SkillCode SkillMouseL
         {
             set
             {
-                Assert.IsFalse(value == CharacterSkillCode.NotSelected);
+                Assert.IsFalse(value == SkillCode.NotSelected);
                 if (SkillSelectUI.IsSkillSelectScene)
                 {
                     skillSlot.charaSkillMouseL = value;

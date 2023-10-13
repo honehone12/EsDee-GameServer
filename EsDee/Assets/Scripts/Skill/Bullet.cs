@@ -9,15 +9,12 @@ namespace EsDee
         [SerializeField]
         GameObject bulletPrefab;
 
-        public NetworkBullet GetOne(Vector3 origin)
+        public NetworkBullet CreateOne(Vector3 origin)
         {
             var bullet = Instantiate(bulletPrefab, origin, Quaternion.identity)
                 .GetComponent<NetworkBullet>();
-            Assert.IsNotNull(bullet);
-            Assert.IsNotNull(bullet.RigidBody);
+            Assert.IsNotNull(bullet);;
             return bullet;
         }
     }
 }
-
-
