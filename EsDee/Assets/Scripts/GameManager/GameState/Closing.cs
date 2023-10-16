@@ -1,3 +1,5 @@
+using UnityEngine.Assertions;
+
 namespace EsDee
 {
     public class Closing : GameState
@@ -7,6 +9,12 @@ namespace EsDee
         public Closing(GameManager gameManager)
         {
             this.gameManager = gameManager;
+        }
+
+        public override void OnStateEnter()
+        {
+            Assert.IsTrue(gameManager.FalledPlayerIds.Count > 0);
+            gameManager.CloseBattle();
         }
     }
 }

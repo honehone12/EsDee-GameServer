@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Unity.Netcode;
+using Unity.Collections;
 
 namespace EsDee
 {
@@ -12,10 +14,17 @@ namespace EsDee
 
         [SerializeField]
         float tickRate = 5.0f;
+        [Header("PlayerSpawn")]
         [SerializeField]
         List<PlayerSpawnLocation> playerSpawnLocationList = new();
+        [Header("BattleArea")]
         [SerializeField]
         List<GameObject> safetyList = new();
+        [Header("UI")]
+        [SerializeField]
+        GameObject winUI;
+        [SerializeField]
+        GameObject loseUI;
 
         GameState gameState;
         Queue<ulong> falledPlayerQueue;
@@ -28,6 +37,8 @@ namespace EsDee
             Assert.IsTrue(tickRate > 0f);
             Assert.IsTrue(playerSpawnLocationList.Count >= 
                 GameSetting.Singleton.BootSetting.MaxConnections);
+            Assert.IsNotNull(winUI);
+            Assert.IsNotNull(loseUI);
 
             if (Singleton == null)
             {
@@ -39,22 +50,17 @@ namespace EsDee
             }
         }
 
-        public override void OnNetworkSpawn()
+        public void OnServerBoot()
         {
             var networkManager = NetworkManager.Singleton;
+            Assert.IsNotNull(networkManager);
+            networkManager.ConnectionApprovalCallback += OnConnectionApprovalCallback;
+        }
 
-            if (IsClient)
-            {
-                networkManager.OnClientConnectedCallback += OnClientConnectedClientCallback;
-                networkManager.OnClientDisconnectCallback += OnClinetDisconnectedClientCallback;
-            }
-
+        public override void OnNetworkSpawn()
+        {
             if (IsServer)
             {
-                networkManager.ConnectionApprovalCallback += OnConnectionApprovalCallback;
-                networkManager.OnClientConnectedCallback += OnClientConnectedServerCallback;
-                networkManager.OnClientDisconnectCallback += OnClientDisconnectedServerCallback;
-
                 falledPlayerQueue = new();
                 isRunning = true;
                 SetNextState(new StandBy(this, GameSetting.Singleton, NetworkManager.Singleton));
@@ -122,30 +128,65 @@ namespace EsDee
             response.Approved = true;
         }
 
-        void OnClientConnectedServerCallback(ulong id)
+        public void StartBattle()
         {
-            
+            RemoveSafetyClientRpc();
         }
 
-        void OnClientConnectedClientCallback(ulong id)
+        public void CloseBattle()
         {
+            if (falledPlayerQueue.TryDequeue(out var loseId))
+            {
+                var loseIds = new NativeArray<ulong>(1, Allocator.Temp);
+                loseIds[0] = loseId;
 
-        }
+                EnableLoseUiClientRpc(new ClientRpcParams
+                {
+                    Send = new ClientRpcSendParams
+                    {
+                        TargetClientIdsNativeArray = loseIds
+                    }
+                });
 
-        void OnClientDisconnectedServerCallback(ulong id)
-        {
+                loseIds.Dispose();
 
-        }
+                if (!falledPlayerQueue.TryDequeue(out var winId))
+                {
+                    winId = NetworkManager.Singleton.ConnectedClientsIds.
+                        First((id) => id != loseId);
+                }
 
-        void OnClinetDisconnectedClientCallback(ulong id)
-        {
+                var winIds = new NativeArray<ulong>(1, Allocator.Temp);
+                winIds[0] = winId;
 
+                EnableWinUiClientRpc(new ClientRpcParams
+                {
+                    Send = new ClientRpcSendParams
+                    {
+                        TargetClientIdsNativeArray = winIds
+                    }
+                });
+
+                winIds.Dispose();
+            }
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         public void RemoveSafetyClientRpc(ClientRpcParams rpcParams = default)
         {
             safetyList.ForEach((go) => go.SetActive(false));
+        }
+
+        [ClientRpc(Delivery = RpcDelivery.Reliable)]
+        public void EnableWinUiClientRpc(ClientRpcParams rpcParams = default)
+        {
+            winUI.SetActive(true);
+        }
+
+        [ClientRpc(Delivery = RpcDelivery.Reliable)]
+        public void EnableLoseUiClientRpc(ClientRpcParams rpcParams = default)
+        {
+            loseUI.SetActive(true);
         }
     }
 }

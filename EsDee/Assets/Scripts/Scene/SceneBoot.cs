@@ -11,6 +11,7 @@ namespace EsDee
             switch (bootMode)
             {
                 case GameBootMode.Development:
+                    GameManager.Singleton.OnServerBoot();
                     NetworkManager.Singleton.StartHost();
                     if (Debug.isDebugBuild)
                     {
@@ -18,6 +19,7 @@ namespace EsDee
                     }
                     break;
                 case GameBootMode.ServerBuild:
+                    GameManager.Singleton.OnServerBoot();
                     NetworkManager.Singleton.StartServer();
                     if (Debug.isDebugBuild)
                     {

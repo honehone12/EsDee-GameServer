@@ -11,7 +11,7 @@ namespace EsDee
 
         public override void OnStateEnter()
         {
-            gameManager.RemoveSafetyClientRpc();
+            gameManager.StartBattle();
         }
 
         public override void OnGameMangerTick()
