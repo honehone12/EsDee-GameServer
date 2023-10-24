@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1354654687112805697}
   - component: {fileID: 901583285347644857}
   - component: {fileID: 6175160809852173512}
+  - component: {fileID: 3692023532887415930}
   m_Layer: 0
   m_Name: GameManger
   m_TagString: Untagged
@@ -47,7 +48,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tickRate: 5
-  safety: {fileID: 0}
+  playerSpawnLocationList: []
+  safetyList: []
+  winUI: {fileID: 0}
+  loseUI: {fileID: 0}
+  serverSceneLoader: {fileID: 6175160809852173512}
+  clientSceneLoader: {fileID: 3692023532887415930}
 --- !u!114 &901583285347644857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,4 +87,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSceneName: Battle
+  delay: 1.5
+--- !u!114 &3692023532887415930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5052987575785078047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d903ed379fa81e41a98a46ceb123819, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nextSceneName: Boot
   delay: 1.5

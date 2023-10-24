@@ -25,6 +25,11 @@ namespace EsDee
         GameObject winUI;
         [SerializeField]
         GameObject loseUI;
+        [Header("Scene")]
+        [SerializeField]
+        SceneLoader serverSceneLoader;
+        [SerializeField]
+        SceneLoader clientSceneLoader;
 
         GameState gameState;
         Queue<ulong> falledPlayerQueue;
@@ -35,10 +40,11 @@ namespace EsDee
         void Awake()
         {
             Assert.IsTrue(tickRate > 0f);
-            Assert.IsTrue(playerSpawnLocationList.Count >= 
-                GameSetting.Singleton.BootSetting.MaxConnections);
+            Assert.IsTrue(playerSpawnLocationList.Count >= 0);
             Assert.IsNotNull(winUI);
             Assert.IsNotNull(loseUI);
+            Assert.IsNotNull(serverSceneLoader);
+            Assert.IsNotNull(clientSceneLoader);
 
             if (Singleton == null)
             {
@@ -130,6 +136,7 @@ namespace EsDee
 
         public void StartBattle()
         {
+            RemoveSafety();
             RemoveSafetyClientRpc();
         }
 
@@ -168,25 +175,50 @@ namespace EsDee
                 });
 
                 winIds.Dispose();
+                ResetGame();
+            }
+        }
+
+        void RemoveSafety()
+        {
+            safetyList.ForEach((go) => go.SetActive(false));
+        }
+
+        void ResetGame()
+        {
+            var nm = NetworkManager.Singleton;
+            nm.Shutdown();
+            Destroy(nm.gameObject);
+            Destroy(GameSetting.Singleton.gameObject);
+
+            if (IsClient || IsHost)
+            {
+                clientSceneLoader.Load();
+            }
+            else
+            {
+                serverSceneLoader.Load();
             }
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         public void RemoveSafetyClientRpc(ClientRpcParams rpcParams = default)
         {
-            safetyList.ForEach((go) => go.SetActive(false));
+            RemoveSafety();
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         public void EnableWinUiClientRpc(ClientRpcParams rpcParams = default)
         {
             winUI.SetActive(true);
+            ResetGame();
         }
 
         [ClientRpc(Delivery = RpcDelivery.Reliable)]
         public void EnableLoseUiClientRpc(ClientRpcParams rpcParams = default)
         {
             loseUI.SetActive(true);
+            ResetGame();
         }
     }
 }

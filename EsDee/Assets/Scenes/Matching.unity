@@ -152,9 +152,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353d7d07d41d5b446abb39fc97507aeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitingText: {fileID: 0}
-  incrText: {fileID: 0}
-  doneText: {fileID: 0}
+  waitingText: {fileID: 379627545}
+  incrText: {fileID: 1223376748}
+  doneText: {fileID: 1379713275}
 --- !u!4 &247087881
 Transform:
   m_ObjectHideFlags: 0

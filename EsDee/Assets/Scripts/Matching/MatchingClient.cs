@@ -8,17 +8,21 @@ namespace EsDee
 {
     public class MatchingClient : MonoBehaviour
     {
+        [System.Serializable]
         public class TicketCreateResponse
         {
             public string Uuid;
         }
 
+        [System.Serializable]
         public class MatchingResult
         {
-            public string Ip;
+            public string Address;
+            public string Port;
             public string[] Uuids;
         }
 
+        [System.Serializable]
         public class StatusValue
         {
             public int StatusCode;
@@ -32,6 +36,8 @@ namespace EsDee
         ServerUrl matchingServerUrl;
         [SerializeField]
         float pollingInterval = 1.0f;
+        [SerializeField]
+        string ticketRoute = "/ticket/create";
         [SerializeField]
         string pollingRoute = "/status/poll";
         [SerializeField]
@@ -50,6 +56,7 @@ namespace EsDee
             Assert.IsNotNull(matchingServerUrl);
             Assert.IsTrue(pollingInterval > 0.0f);
             Assert.IsFalse(string.IsNullOrEmpty(pollingRoute));
+            Assert.IsFalse(string.IsNullOrEmpty(standbyRoute));
             Assert.IsNotNull(matchingUI);
             Assert.IsNotNull(sceneLoader);
         }
@@ -77,22 +84,23 @@ namespace EsDee
             Assert.IsNotNull(OnSuccess);
             Assert.IsNotNull(OnError);
 
-            var url = matchingServerUrl.Url.GetUrlString();
+            var url = matchingServerUrl.Url.GetUrlString(ticketRoute);
             using var req = UnityWebRequest.Get(url);
             yield return req.SendWebRequest();
 
             if (req.result == UnityWebRequest.Result.Success)
             {
-                var res = JsonUtility.FromJson<TicketCreateResponse>(req.downloadHandler.text);
-                if (res != null)
+                var text = req.downloadHandler.text;
+                if (!string.IsNullOrEmpty(text))
                 {
+                    var res = JsonUtility.FromJson<TicketCreateResponse>(text);
                     OnSuccess(res);
                 }
                 else
                 {
                     OnError(new HttpError(
-                        "failed to parse json",
-                        UnityWebRequest.Result.DataProcessingError
+                        "unexpected empty response",
+                        UnityWebRequest.Result.ConnectionError
                     ));
                 }
             }
@@ -138,9 +146,10 @@ namespace EsDee
 
                 if (req.result == UnityWebRequest.Result.Success)
                 {
-                    var res = JsonUtility.FromJson<StatusValue>(req.downloadHandler.text);
-                    if (res != null)
+                    var text = req.downloadHandler.text;
+                    if (!string.IsNullOrEmpty(text))
                     {
+                        var res = JsonUtility.FromJson<StatusValue>(text);
                         if (res.StatusCode == StatusDone)
                         {
                             OnMatchingDone(uuid, res);
@@ -154,8 +163,8 @@ namespace EsDee
                     else
                     {
                         OnError(new HttpError(
-                            "failed to parse json",
-                            UnityWebRequest.Result.DataProcessingError
+                            "unexpected empty response",
+                            UnityWebRequest.Result.ConnectionError
                         ));
                     }
                 }
@@ -172,7 +181,7 @@ namespace EsDee
         {
             matchingUI.SwapTextAsDone();
             _ = StartCoroutine(Standby(
-                uuid, res,
+                uuid, res.Result,
                 (err) =>
                 {
                     Debug.LogError($"[{err.code}], {err.message}");
@@ -186,7 +195,7 @@ namespace EsDee
             matchingUI.IncrementText(numTry);
         }
 
-        IEnumerator Standby(string uuid, StatusValue res, UnityAction<HttpError> OnError)
+        IEnumerator Standby(string uuid, MatchingResult result, UnityAction<HttpError> OnError)
         {
             Assert.IsNotNull(OnError);
 
@@ -197,7 +206,17 @@ namespace EsDee
 
             if (req.result == UnityWebRequest.Result.Success)
             {
-                sceneLoader.Load();
+                if (GameSetting.Singleton.TrySetGameServerUrl(result.Address, result.Port))
+                {
+                    sceneLoader.Load();
+                }
+                else
+                {
+                    OnError(new HttpError(
+                        "failed to parse ip", 
+                        UnityWebRequest.Result.DataProcessingError
+                    ));
+                }
             }
             else
             {
